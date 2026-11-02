@@ -2,16 +2,7 @@
 
 ## Project Summary
 
-In this project you will build and explain a small music recommender system.
-
-Your goal is to:
-
-- Represent songs and a user "taste profile" as data
-- Design a scoring rule that turns that data into recommendations
-- Evaluate what your system gets right and wrong
-- Reflect on how this mirrors real world AI recommenders
-
-Replace this paragraph with your own summary of what your version does.
+A small, CLI-first, content-based music recommender. It represents each song as a set of audio features (`energy`, `valence`, `danceability`, `acousticness`) plus `genre` and `mood` labels, and represents what a listener wants right now as a matching set of target preferences. `recommend_songs()` scores every song in `data/songs.csv` by Euclidean distance on the numeric features, adds small bonuses for a mood or genre match, ranks all songs by that score, and returns the top K with a plain-English explanation for each. The project also documents, in README and `model_card.md`, where that simple scoring logic breaks down — catalog imbalance, artist repetition, and contradictory or out-of-catalog user requests — to connect this toy system back to the tradeoffs real-world recommenders make.
 
 ---
 
@@ -142,27 +133,26 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Sample Recommendation Output
 
-Output from running `python src/main.py` with the starter profile `{"genre": "pop", "mood": "happy", "energy": 0.8}`:
+Output from running `python src/main.py` with the starter profile `{"genre": "pop", "mood": "happy", "energy": 0.8}`. Recommendations are printed as a table (via `tabulate`, with a plain-text fallback if it isn't installed) so the score and reasons for each song are easy to scan at a glance:
 
 ```
 Loaded songs: 28
 
 Based on your preferences ({'genre': 'pop', 'mood': 'happy', 'energy': 0.8}), here are your top 5 recommendations:
 
-1. Sunrise City by Neon Echo (pop, happy) — Score: 1.18
-   Why: Recommended because its audio profile is a 98% match to what you're looking for, it matches your 'happy' mood, and it's in the 'pop' genre you prefer.
-
-2. Rooftop Lights by Indigo Parade (indie pop, happy) — Score: 1.11
-   Why: Recommended because its audio profile is a 96% match to what you're looking for, and it matches your 'happy' mood.
-
-3. Dancehall Riot by Mellow Tide (reggae, energetic) — Score: 0.98
-   Why: Recommended because its audio profile is a 98% match to what you're looking for.
-
-4. Paper Crown by Yuki Starling (k-pop, triumphant) — Score: 0.95
-   Why: Recommended because its audio profile is a 95% match to what you're looking for.
-
-5. Night Drive Loop by Neon Echo (synthwave, moody) — Score: 0.95
-   Why: Recommended because its audio profile is a 95% match to what you're looking for.
++-----+------------------+---------------+-----------+------------+---------+-----------------------------------------------------------------------------------------------------------------------------------+
+|   # | Title            | Artist        | Genre     | Mood       |   Score | Reasons                                                                                                                           |
++=====+==================+===============+===========+============+=========+===================================================================================================================================+
+|   1 | Sunrise City     | Neon Echo     | pop       | happy      |    1.18 | its audio profile is a 98% match to what you're looking for, it matches your 'happy' mood, and it's in the 'pop' genre you prefer |
++-----+------------------+---------------+-----------+------------+---------+-----------------------------------------------------------------------------------------------------------------------------------+
+|   2 | Rooftop Lights   | Indigo Parade | indie pop | happy      |    1.11 | its audio profile is a 96% match to what you're looking for, and it matches your 'happy' mood                                     |
++-----+------------------+---------------+-----------+------------+---------+-----------------------------------------------------------------------------------------------------------------------------------+
+|   3 | Dancehall Riot   | Mellow Tide   | reggae    | energetic  |    0.98 | its audio profile is a 98% match to what you're looking for                                                                       |
++-----+------------------+---------------+-----------+------------+---------+-----------------------------------------------------------------------------------------------------------------------------------+
+|   4 | Paper Crown      | Yuki Starling | k-pop     | triumphant |    0.95 | its audio profile is a 95% match to what you're looking for                                                                       |
++-----+------------------+---------------+-----------+------------+---------+-----------------------------------------------------------------------------------------------------------------------------------+
+|   5 | Night Drive Loop | Neon Echo     | synthwave | moody      |    0.95 | its audio profile is a 95% match to what you're looking for                                                                       |
++-----+------------------+---------------+-----------+------------+---------+-----------------------------------------------------------------------------------------------------------------------------------+
 ```
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
@@ -170,12 +160,6 @@ Based on your preferences ({'genre': 'pop', 'mood': 'happy', 'energy': 0.8}), he
 ---
 
 ## Experiments You Tried
-
-Use this section to document the experiments you ran. For example:
-
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
 
 ### Standard User Profiles
 
@@ -314,13 +298,10 @@ BASELINE (mood=0.15, genre=0.05)              SHIFTED (mood=0.05, genre=0.15)
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
-
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
+- It only works on a tiny catalog (28 songs) — results would look very different with a real-scale catalog of thousands of songs.
+- It does not understand lyrics, language, or anything about the audio itself — `energy`, `valence`, `danceability`, and `acousticness` are hand-entered numbers, not measured from real audio.
+- It has no listening history or feedback loop, so it can't learn from what a user actually likes versus what they said they wanted.
+- As shown below, it can over-favor certain genres, moods, or artists simply because of how the catalog happens to be composed.
 
 ### Potential Biases
 
@@ -389,14 +370,11 @@ You will go deeper on this in your model card.
 
 ## Reflection
 
-Read and complete `model_card.md`:
+Full write-up, including a personal reflection on the engineering process, is in [**model_card.md**](model_card.md).
 
-[**Model Card**](model_card.md)
+Building this project made clear that a recommender doesn't need to "understand" anything to feel personalized — it just needs numbers that are close enough and a confident-sounding explanation. Turning data into predictions here is really just distance math (how close is this song's audio profile to what you asked for) plus a couple of small categorical bonuses for mood and genre; the "intelligence" is almost entirely in how those few numbers are weighted and combined, not in any deeper understanding of music.
 
-Write 1 to 2 paragraphs here about what you learned:
-
-- about how recommenders turn data into predictions
-- about where bias or unfairness could show up in systems like this
+Bias and unfairness showed up in very concrete, measurable ways rather than abstract ones: a 100-random-profile test showed that artists with more songs in the catalog (LoRoom, Reverie Sol) get recommended far more often, purely because they have more entries competing for the same slots, and mid-range "unremarkable" songs end up near the top of almost any search simply because they're numerically close to everything. Disabling the mood check entirely also revealed that the system can quietly recommend a song with the wrong emotional tone (an "intense" song for someone who wanted "happy") whenever two moods happen to share a similar numeric profile. None of this is malicious — it's just what happens when a small, uncurated dataset and a few hand-picked weights decide who gets seen.
 
 
 
