@@ -1,0 +1,50 @@
+DATA FLOW SKETCH
+================
+
+[1] INPUT — User Prefs
+--------------------------------
+  UserProfile
+    target_energy        (0-1)
+    target_valence        (0-1)
+    target_danceability    (0-1)
+    target_acousticness    (0-1)
+    target_mood            (e.g. "chill")
+    preferred_genres       (e.g. ["pop", "indie pop"])
+
+        |
+        v
+
+[2] PROCESS — The Loop (score every song in songs.csv)
+--------------------------------------------------------
+  for each Song S in songs.csv:
+
+      1. Build numeric vectors
+            T = (target_energy, target_valence,
+                 target_danceability, target_acousticness)
+            V = (S.energy, S.valence,
+                 S.danceability, S.acousticness)
+
+      2. distance = euclidean(T, V)
+         similarity = 1 - (distance / 2)        -> [0, 1]
+
+      3. mood_bonus  = 0.15 if S.mood  == target_mood         else 0
+         genre_bonus = 0.05 if S.genre in preferred_genres    else 0
+
+      4. final_score = similarity + mood_bonus + genre_bonus
+
+      store (S, final_score)
+
+        |
+        v
+
+[3] OUTPUT — The Ranking (Top K)
+--------------------------------------------------------
+  sort all (S, final_score) pairs by final_score, descending
+  break ties by higher danceability (or catalog order)
+  return first K results
+
+  Recommendations:
+    1. Song A  (score 1.10)  <- closest audio match + mood + genre match
+    2. Song B  (score 1.00)  <- strong audio match + mood match
+    3. Song C  (score 0.93)  <- strong audio match + genre match only
+    ...

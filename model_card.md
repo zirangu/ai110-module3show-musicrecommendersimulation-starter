@@ -32,6 +32,12 @@ Prompts:
 
 Avoid code here. Pretend you are explaining the idea to a friend who does not program.
 
+**Plain-language explanation:**
+
+Think of each song as a point with four "audio dials" turned somewhere between 0 and 1: how energetic it is, how positive/upbeat it sounds, how danceable it is, and how acoustic (unplugged) it feels. When you tell the system what you're in the mood for, it sets those same four dials to your target, then checks every song in the catalog and measures how close its dials are to yours — the closer the dials line up, the higher the "audio match" score it gets.
+
+On top of that base match, the system gives two small bonuses: a bigger one if the song's mood label (like "chill" or "happy") matches what you asked for, since mood is the clearest hint of what you want to hear right now, and a smaller one if the song's genre is one you said you like, since genre is more about general taste than the specific moment. A song still needs a genuinely close audio match to rank near the top — the bonuses only help break ties or nudge close calls, they can't rescue a song whose overall vibe is far off from what you asked for. Finally, the system sorts every song by its total score and hands back the highest-scoring ones, along with a plain-English reason for each (e.g., "it's a 95% audio match, and it matches your happy mood").
+
 ---
 
 ## 4. Data  

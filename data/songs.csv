@@ -9,3 +9,21 @@ id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness
 8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22
 9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78
 10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35
+11,Backroad Sunset,Clay & Wren,country,nostalgic,0.52,96,0.68,0.55,0.48
+12,Velvet Static,DJ Kessler,house,energetic,0.88,126,0.72,0.91,0.08
+13,Broken Window,Grayscale Hymn,metal,angry,0.97,168,0.22,0.48,0.03
+14,Paper Boats,Wen Liu,classical,peaceful,0.22,66,0.58,0.30,0.95
+15,Dust and Gold,Mariachi Luna,latin,romantic,0.68,100,0.79,0.84,0.30
+16,City Lullaby,Reverie Sol,r&b,sad,0.30,70,0.28,0.45,0.55
+17,Sunday Sermon,The Low Pews,gospel,hopeful,0.60,92,0.88,0.58,0.40
+18,Riot Gear,Static Fang,punk,angry,0.95,170,0.35,0.60,0.05
+19,Honeycomb Drift,Mellow Tide,reggae,playful,0.55,88,0.80,0.75,0.42
+20,Rust Belt Ballad,Harlan Creek,folk,melancholic,0.33,76,0.32,0.38,0.80
+21,Neon Monsoon,8-Bit Mirage,electronic,dreamy,0.66,122,0.60,0.70,0.25
+22,Clay Pigeons,Dust Devil Trio,blues,moody,0.45,84,0.40,0.50,0.60
+23,Paper Crown,Yuki Starling,k-pop,triumphant,0.85,128,0.90,0.86,0.15
+24,Lantern Hollow,Wen Liu,classical,sad,0.20,58,0.25,0.22,0.93
+25,Tidepool Static,Orbit Bloom,ambient,dreamy,0.26,62,0.55,0.35,0.90
+26,Thunderclap Tuesday,Voltline,rock,triumphant,0.89,140,0.74,0.70,0.12
+27,Slow Burn,Reverie Sol,r&b,romantic,0.48,82,0.70,0.58,0.50
+28,Dancehall Riot,Mellow Tide,reggae,energetic,0.78,118,0.83,0.88,0.20
